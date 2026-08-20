@@ -22,9 +22,11 @@ matrix later. The UI is not the product.
 
 `feeds/matrix.yaml` is the CEL-side catalog of those inputs. `ingest_status:
 implemented` means Sentinel already has an adapter. `planned` means CEL
-already has the word and the source — Sentinel should grow into it.
+already has the word and the source — Sentinel should grow into it. v0 of
+this catalog is **14/14 implemented**; key-gated feeds (FIRMS, ReliefWeb,
+AirNow) skip live pull when their env vars are unset.
 
-Do not shrink the CEL taxonomy to match today's four fetch scripts.
+Do not shrink the CEL taxonomy to match today's Sentinel adapters.
 
 ## VITO is the suggestion / decision layer
 

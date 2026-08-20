@@ -22,8 +22,8 @@ not substituted.
 | Artifact | Role |
 |---|---|
 | [`taxonomies/disasters.yaml`](../../taxonomies/disasters.yaml) | CEL incident language |
-| [`feeds/matrix.yaml`](../../feeds/matrix.yaml) | Sources Sentinel should ingest |
-| [`response_machines/wildland_proximity.json`](../../response_machines/wildland_proximity.json) | First response FSM |
+| [`feeds/matrix.yaml`](../../feeds/matrix.yaml) | Sources Sentinel should ingest (14/14 implemented) |
+| [`response_machines/`](../../response_machines/) | Response FSMs (wildland, earthquake, flood) |
 | [`crosswalks/`](../../crosswalks/) | USGS, GDACS, NWS CAP → CEL |
 
 Sentinel consumes CEL words. VITO applies policy. Neither mints CEL

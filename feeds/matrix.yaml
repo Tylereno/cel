@@ -3,8 +3,9 @@ version: 0.1.0
 cel_spec: 0.1.0
 title: Sentinel ingest matrix
 description: 'Open sources Sentinel should read. CEL names the disasters; Sentinel
-  polls and normalizes; VITO decides and suggests. This file is not a fetcher. Sentinel''s
-  current adapters are a subset. Frontend is not the product.
+  polls and normalizes; VITO decides and suggests. This file is not a fetcher.
+  All 14 catalog sources have Sentinel adapters. Key-gated feeds skip live pull
+  when env is unset. Frontend is not the product.
 
   '
 sources:

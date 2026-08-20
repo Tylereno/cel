@@ -4,7 +4,7 @@
 **Spec:** 0.1.0
 **Schema:** [`core_schemas/response_machine.json`](../../core_schemas/response_machine.json)
 **State schema:** [`core_schemas/response_state.json`](../../core_schemas/response_state.json)
-**Instance:** [`response_machines/wildland_proximity.json`](../../response_machines/wildland_proximity.json)
+**Instance:** [`response_machines/`](../../response_machines/) (wildland, earthquake, flood)
 
 ## Separate dimension
 
@@ -40,4 +40,11 @@ not shed load, page crews, or trip breakers.
 - HIP or CAP identifiers as the state names
 
 The first v0 machine is **wildland proximity** bound to
-`disaster.fire.wildland` only.
+`disaster.fire.wildland`. Additional v0 machines reuse the same response
+states for earthquake and flood:
+
+| Machine | Incident types |
+|---|---|
+| [`wildland_proximity.json`](../../response_machines/wildland_proximity.json) | `disaster.fire.wildland` |
+| [`earthquake_proximity.json`](../../response_machines/earthquake_proximity.json) | `disaster.geophysical.earthquake` |
+| [`flood_proximity.json`](../../response_machines/flood_proximity.json) | `disaster.hydrological.flood`, `disaster.hydrological.flash_flood` |
