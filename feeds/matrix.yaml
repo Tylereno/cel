@@ -98,10 +98,10 @@ sources:
   cadence: 5m
   cel_codes:
   - disaster.fire.wildland
-  ingest_status: planned
+  ingest_status: implemented
   attribution: NASA Fire Information for Resource Management System
   notes:
-  - Open MAP_KEY signup. Not an authenticated SaaS product feed.
+  - Requires FIRMS_MAP_KEY env. Adapter skips live pull when unset.
 - id: nhc-atlantic-rss
   provider: nhc
   title: NHC Atlantic tropical weather RSS
@@ -124,13 +124,13 @@ sources:
   attribution: Pacific Tsunami Warning Center
 - id: usgs-volcano
   provider: usgs
-  title: USGS volcano notices
+  title: USGS volcano notices (HANS CAP RSS)
   kind: rss
-  url: https://volcanoes.usgs.gov/vhp/notice_rss.php
+  url: https://volcanoes.usgs.gov/hans-public/rss/cap/
   cadence: 15m
   cel_codes:
   - disaster.geophysical.volcano
-  ingest_status: planned
+  ingest_status: implemented
   attribution: USGS Volcano Hazards Program
 - id: noaa-swpc-alerts
   provider: swpc
