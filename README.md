@@ -12,95 +12,89 @@ Stewarded by [Tyler Eno](https://tylereno.me/). Anyone may implement it.
 Planned landing: `openeno.dev` and an `openeno` GitHub org. Until that move,
 this repository (`Tylereno/cel`) is the format source of truth.
 
+## Layers (do not collapse)
+
+| Layer | Owns | Does not own |
+|---|---|---|
+| **CEL** | Incident words + response words | Ingest, UI, actuation |
+| **Sentinel** | Observation matrix (RSS / Atom / CAP / GeoJSON / REST) | Decisions, suggestions, dashboards-as-product |
+| **VITO** | Local decisions and suggestions from those observations | Minting CEL words; becoming a feed scraper |
+
+```
+many open feeds (RSS / CAP / GeoJSON)
+        ↓ Sentinel (read, normalize, provenance)
+CEL words: disaster.geophysical.earthquake
+        ↓ VITO (policy, suggestions, optional actuation)
+CEL words: response.monitor → response.escalate → response.isolate_load
+```
+
+Sentinel's current adapters are **not** the language ceiling. CEL names
+disasters Sentinel should grow into. Sentinel should grow as a **feed matrix**,
+not as a frontend project. VITO is the layer that decides and suggests.
+
 ## Why a new language
 
 Alert formats and hazard encyclopedias already exist. They do not replace CEL.
 
 | Existing standard | What it is | Why it is not CEL |
 |---|---|---|
-| **CAP 1.2** | Alert *message* (event, urgency, severity, certainty, area) | A payload about an observation, not a site response language |
-| **UNDRR–ISC HIPs** | 281-hazard scientific taxonomy (`GH0101`, `EN0205`) | Canonical for research/interop; not speakable crew/edge vocabulary |
-| **GDACS / GLIDE / EM-DAT** | Feed and loss-database codes | What those systems return; not what a VITO node should display as truth |
+| **CAP 1.2** | Alert *message* | A payload, not a site language |
+| **UNDRR–ISC HIPs** | 281-hazard scientific taxonomy | Profile on a CEL leaf; not the crew identifier |
+| **GDACS / GLIDE / EM-DAT** | Feed and loss-database codes | Crosswalk source |
 | **NIMS / ICS** | Human operations doctrine | Buyer language, not a JSON state machine |
 | **OIDF** | Commissioning *evidence* states | Different question (see below) |
 
-CEL is the gap those pieces leave: a **small, readable language** for
-incident type + automated **response state**, with **crosswalks** into the
-standards above.
-
-```
-USGS / CAP / GDACS observation
-        ↓ crosswalks/
-CEL words: disaster.geophysical.earthquake
-        ↓ response_machines/
-CEL words: response.monitor → response.escalate → response.isolate_load
-        ↓ consumer policy (not CEL)
-VITO may actuate; Sentinel never does
-```
-
 ## Sibling of OIDF, not a part of it
-
-CEL and [OIDF](https://github.com/Tylereno/oidf) are sibling OpenEno languages.
-Same *shape* (vocabulary + state machine + JSON Schema). Different *domain*.
-**Do not merge them.**
 
 | Question | Language |
 |---|---|
 | Can this **asset** advance commissioning because the **evidence** is valid? | **OIDF** |
 | What **incident** is this, and what **response state** may automated systems enter? | **CEL** |
 
-Commissioning SAT gates, handoff ledgers, and energization evidence stay in
-OIDF and [Keel](https://github.com/Tylereno/keel).
-
-## v0 scope (finite, speakable)
+## Repository map
 
 ```
 cel/
-  README.md
-  docs/normative/          # human-readable contracts
-  core_schemas/            # JSON Schema (OIDF-shaped layout, CEL semantics)
   taxonomies/              # the CEL incident words
+  feeds/matrix.yaml        # sources Sentinel should ingest
   response_machines/       # the CEL response words + allowed transitions
-  crosswalks/              # USGS / GDACS / CAP / HIP → CEL
-  tooling/                 # schema + instance validation
+  crosswalks/              # USGS / GDACS / NWS CAP / HIP → CEL
+  core_schemas/            # JSON Schema (OIDF-shaped layout, CEL semantics)
+  docs/normative/
 ```
 
-v0 is mission-scoped to Sentinel-class feeds. It is **not** a 281-hazard
-encyclopedia. HIP codes appear as *profiles on CEL leaves*, not as the
-identifiers crews use.
+HIP codes appear as *profiles on CEL leaves*, not as the identifiers crews
+use. The taxonomy is speakable English, not a 281-row dump, and not clipped
+to whatever Sentinel happens to poll this week.
 
-### Incident words
+### Incident words (excerpt)
 
 ```
 disaster
-├── fire.wildland
-├── fire.structure
-├── geophysical.earthquake
-├── meteorological.severe_storm
-└── hydrological.flood
+├── fire.wildland / structure / industrial
+├── geophysical.earthquake / tsunami / volcano / landslide
+├── meteorological.severe_storm / tropical_cyclone / tornado / …
+├── hydrological.flood / flash_flood / drought / …
+├── environmental.smoke / air_quality
+├── technological.dam_failure / hazmat / explosion / nuclear
+├── extraterrestrial.space_weather
+└── biological.disease_outbreak
 ```
+
+See [`taxonomies/disasters.yaml`](./taxonomies/disasters.yaml) for the full
+tree. See [`feeds/matrix.yaml`](./feeds/matrix.yaml) for the ingest matrix.
 
 ### Response words (separate dimension)
 
-A site may be `response.monitor` during `disaster.fire.wildland` proximity
-and transition to `response.isolate_load` when **consumer policy** (not CEL)
-says the threshold is met.
-
 v0 states: `monitor`, `escalate`, `isolate_load`, `shelter`, `recover`.
+CAP urgency/severity/certainty describe an alert. They are not these states.
 
 ## What this repo does not contain
 
-- Runtime, ingest, correlation, or dashboards ([Sentinel](https://github.com/Tylereno/sentinel) / [VITO](https://github.com/Tylereno/ark-node))
-- Commissioning SAT gates or equipment evidence (OIDF + Keel)
-- A copy of the UNDRR HIP tree or a CAP message schema
-- Hardware BOMs (Sunwave)
+- Runtime, ingest, or dashboards (Sentinel / VITO)
+- Commissioning SAT gates (OIDF + Keel)
+- A copy of the UNDRR HIP tree or a forked CAP schema
 - A public `enotech.systems` nav item
-
-## Consumers (later, not in this repo)
-
-- **Sentinel** — maps open-feed observations to CEL incident words
-- **VITO** — optional local policy on CEL response words
-- **OIDF / Keel** — unchanged; commissioning only
 
 ## Validate locally
 

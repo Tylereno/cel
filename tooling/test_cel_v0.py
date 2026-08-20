@@ -27,7 +27,10 @@ class CelV0ScaffoldTests(unittest.TestCase):
         self.assertIn("new language", readme)
         self.assertIn("disaster.fire.wildland", readme)
         self.assertIn("response.isolate_load", readme)
+        self.assertIn("feed matrix", readme)
+        self.assertIn("vito", readme)
         self.assertNotIn("just use hip", readme)
+        self.assertNotIn("mission-scoped to sentinel-class feeds", readme)
 
     def test_response_machine_has_handout_states(self) -> None:
         machine = json.loads(
@@ -59,8 +62,14 @@ class CelV0ScaffoldTests(unittest.TestCase):
             "disaster.fire.wildland",
             "disaster.fire.structure",
             "disaster.geophysical.earthquake",
+            "disaster.geophysical.volcano",
             "disaster.meteorological.severe_storm",
+            "disaster.meteorological.tornado",
             "disaster.hydrological.flood",
+            "disaster.hydrological.drought",
+            "disaster.technological.dam_failure",
+            "disaster.extraterrestrial.space_weather",
+            "disaster.biological.disease_outbreak",
         ):
             self.assertIn(required, codes)
             self.assertTrue(
@@ -93,6 +102,25 @@ class CelV0ScaffoldTests(unittest.TestCase):
         self.assertEqual(by_event["EQ"], "disaster.geophysical.earthquake")
         self.assertEqual(by_event["FL"], "disaster.hydrological.flood")
         self.assertEqual(by_event["TC"], "disaster.meteorological.tropical_cyclone")
+        self.assertEqual(by_event["VO"], "disaster.geophysical.volcano")
+        self.assertEqual(by_event["DR"], "disaster.hydrological.drought")
+
+    def test_feed_matrix_names_planned_sources(self) -> None:
+        matrix = yaml.safe_load((ROOT / "feeds" / "matrix.yaml").read_text(encoding="utf-8"))
+        by_id = {row["id"]: row for row in matrix["sources"]}
+        self.assertGreaterEqual(len(by_id), 10)
+        self.assertEqual(by_id["usgs-earthquake-geojson"]["ingest_status"], "implemented")
+        self.assertEqual(by_id["gdacs-rss"]["ingest_status"], "planned")
+        self.assertEqual(by_id["nhc-atlantic-rss"]["kind"], "rss")
+        self.assertIn("disaster.extraterrestrial.space_weather", by_id["noaa-swpc-alerts"]["cel_codes"])
+
+    def test_nws_cap_crosswalk_covers_tornado(self) -> None:
+        crosswalk = yaml.safe_load(
+            (ROOT / "crosswalks" / "nws_cap.yaml").read_text(encoding="utf-8")
+        )
+        by_event = {rule["match"]["equals"]: rule["cel_code"] for rule in crosswalk["maps"]}
+        self.assertEqual(by_event["Tornado Warning"], "disaster.meteorological.tornado")
+        self.assertEqual(by_event["Flash Flood Warning"], "disaster.hydrological.flash_flood")
 
     def test_commissioning_keys_are_rejected(self) -> None:
         with self.assertRaises(ValueError):
