@@ -1,195 +1,182 @@
 id: cel.feeds.matrix
-version: "0.1.0"
-cel_spec: "0.1.0"
+version: 0.1.0
+cel_spec: 0.1.0
 title: Sentinel ingest matrix
-description: >
-  Open sources Sentinel should read. CEL names the disasters; Sentinel
-  polls and normalizes; VITO decides and suggests. This file is not a
-  fetcher. Sentinel's current adapters are a subset. Frontend is not
-  the product.
+description: 'Open sources Sentinel should read. CEL names the disasters; Sentinel
+  polls and normalizes; VITO decides and suggests. This file is not a fetcher. Sentinel''s
+  current adapters are a subset. Frontend is not the product.
+
+  '
 sources:
-  - id: usgs-earthquake-geojson
-    provider: usgs
-    title: USGS earthquake GeoJSON (all day)
-    kind: geojson
-    url: https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_day.geojson
-    cadence: 60s
-    cel_codes:
-      - disaster.geophysical.earthquake
-    ingest_status: implemented
-    attribution: U.S. Geological Survey Earthquake Hazards Program
-
-  - id: usgs-earthquake-atom
-    provider: usgs
-    title: USGS earthquake Atom
-    kind: atom
-    url: https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_day.atom
-    cadence: 60s
-    cel_codes:
-      - disaster.geophysical.earthquake
-    ingest_status: planned
-    attribution: U.S. Geological Survey Earthquake Hazards Program
-
-  - id: nws-cap-active
-    provider: nws
-    title: NWS active CAP alerts
-    kind: cap
-    url: https://api.weather.gov/alerts/active
-    cadence: 60s
-    cel_codes:
-      - disaster.meteorological.severe_storm
-      - disaster.meteorological.tornado
-      - disaster.meteorological.tropical_cyclone
-      - disaster.meteorological.extreme_heat
-      - disaster.meteorological.extreme_cold
-      - disaster.meteorological.winter_storm
-      - disaster.meteorological.high_wind
-      - disaster.hydrological.flood
-      - disaster.hydrological.flash_flood
-      - disaster.hydrological.coastal_flood
-      - disaster.hydrological.storm_surge
-      - disaster.geophysical.tsunami
-      - disaster.fire.wildland
-    ingest_status: implemented
-    attribution: National Weather Service
-    notes:
-      - Feature-flagged in Sentinel today. Matrix target is always-on CAP ingest.
-
-  - id: gdacs-rss
-    provider: gdacs
-    title: GDACS RSS
-    kind: rss
-    url: https://www.gdacs.org/xml/rss.xml
-    cadence: 5m
-    cel_codes:
-      - disaster.geophysical.earthquake
-      - disaster.geophysical.tsunami
-      - disaster.geophysical.volcano
-      - disaster.meteorological.tropical_cyclone
-      - disaster.hydrological.flood
-      - disaster.hydrological.drought
-    ingest_status: planned
-    attribution: Global Disaster Alert and Coordination System
-
-  - id: nasa-eonet
-    provider: nasa
-    title: NASA EONET events
-    kind: geojson
-    url: https://eonet.gsfc.nasa.gov/api/v3/events
-    cadence: 5m
-    cel_codes:
-      - disaster.fire.wildland
-      - disaster.geophysical.volcano
-      - disaster.hydrological.flood
-      - disaster.meteorological.severe_storm
-    ingest_status: implemented
-    attribution: NASA Earth Observatory Natural Event Tracker
-
-  - id: wfigs-incidents
-    provider: nifc
-    title: WFIGS active wildfire incidents
-    kind: geojson
-    url: https://services3.arcgis.com/T4QMspbfLg3qTGWY/arcgis/rest/services/WFIGS_Incident_Locations_Current/FeatureServer/0/query
-    cadence: 5m
-    cel_codes:
-      - disaster.fire.wildland
-    ingest_status: implemented
-    attribution: Wildland Fire Interagency Geospatial Services / NIFC
-
-  - id: nasa-firms
-    provider: nasa
-    title: NASA FIRMS VIIRS/MODIS hotspots
-    kind: csv
-    url: https://firms.modaps.eosdis.nasa.gov/api/area/csv
-    cadence: 5m
-    cel_codes:
-      - disaster.fire.wildland
-    ingest_status: planned
-    attribution: NASA Fire Information for Resource Management System
-    notes:
-      - Open MAP_KEY signup. Not an authenticated SaaS product feed.
-
-  - id: nhc-atlantic-rss
-    provider: nhc
-    title: NHC Atlantic tropical weather RSS
-    kind: rss
-    url: https://www.nhc.noaa.gov/index-at.xml
-    cadence: 5m
-    cel_codes:
-      - disaster.meteorological.tropical_cyclone
-    ingest_status: planned
-    attribution: NOAA National Hurricane Center
-
-  - id: ptwc-tsunami-atom
-    provider: ptwc
-    title: PTWC tsunami bulletins
-    kind: atom
-    url: https://www.tsunami.gov/events/xml/PAAQAtom.xml
-    cadence: 60s
-    cel_codes:
-      - disaster.geophysical.tsunami
-    ingest_status: planned
-    attribution: Pacific Tsunami Warning Center
-
-  - id: usgs-volcano
-    provider: usgs
-    title: USGS volcano notices
-    kind: rss
-    url: https://volcanoes.usgs.gov/vhp/notice_rss.php
-    cadence: 15m
-    cel_codes:
-      - disaster.geophysical.volcano
-    ingest_status: planned
-    attribution: USGS Volcano Hazards Program
-
-  - id: noaa-swpc-alerts
-    provider: swpc
-    title: NOAA SWPC space-weather alerts
-    kind: rest
-    url: https://services.swpc.noaa.gov/products/alerts.json
-    cadence: 5m
-    cel_codes:
-      - disaster.extraterrestrial.space_weather
-    ingest_status: planned
-    attribution: NOAA Space Weather Prediction Center
-    notes:
-      - JSON alerts product; treat as rest/rss-equivalent ingest.
-
-  - id: reliefweb-disasters
-    provider: reliefweb
-    title: ReliefWeb disasters RSS
-    kind: rss
-    url: https://reliefweb.int/updates/rss.xml?sl[0]=primary_country_iso3%3Ausa&search=disaster
-    cadence: 15m
-    cel_codes:
-      - disaster.geophysical.earthquake
-      - disaster.hydrological.flood
-      - disaster.meteorological.tropical_cyclone
-      - disaster.biological.disease_outbreak
-    ingest_status: planned
-    attribution: ReliefWeb / OCHA
-
-  - id: drought-monitor
-    provider: ndmc
-    title: US Drought Monitor
-    kind: rest
-    url: https://droughtmonitor.unl.edu/
-    cadence: 1d
-    cel_codes:
-      - disaster.hydrological.drought
-    ingest_status: planned
-    attribution: National Drought Mitigation Center
-
-  - id: airnow
-    provider: airnow
-    title: AirNow AQI
-    kind: rest
-    url: https://www.airnowapi.org/
-    cadence: 1h
-    cel_codes:
-      - disaster.environmental.air_quality
-      - disaster.environmental.smoke
-    ingest_status: planned
-    attribution: U.S. EPA AirNow
-    notes:
-      - May require a free MAP key. Confirm ADR-002 before enabling.
+- id: usgs-earthquake-geojson
+  provider: usgs
+  title: USGS earthquake GeoJSON (all day)
+  kind: geojson
+  url: https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_day.geojson
+  cadence: 60s
+  cel_codes:
+  - disaster.geophysical.earthquake
+  ingest_status: implemented
+  attribution: U.S. Geological Survey Earthquake Hazards Program
+- id: usgs-earthquake-atom
+  provider: usgs
+  title: USGS earthquake Atom
+  kind: atom
+  url: https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_day.atom
+  cadence: 60s
+  cel_codes:
+  - disaster.geophysical.earthquake
+  ingest_status: planned
+  attribution: U.S. Geological Survey Earthquake Hazards Program
+- id: nws-cap-active
+  provider: nws
+  title: NWS active CAP alerts
+  kind: cap
+  url: https://api.weather.gov/alerts/active
+  cadence: 60s
+  cel_codes:
+  - disaster.meteorological.severe_storm
+  - disaster.meteorological.tornado
+  - disaster.meteorological.tropical_cyclone
+  - disaster.meteorological.extreme_heat
+  - disaster.meteorological.extreme_cold
+  - disaster.meteorological.winter_storm
+  - disaster.meteorological.high_wind
+  - disaster.hydrological.flood
+  - disaster.hydrological.flash_flood
+  - disaster.hydrological.coastal_flood
+  - disaster.hydrological.storm_surge
+  - disaster.geophysical.tsunami
+  - disaster.fire.wildland
+  ingest_status: implemented
+  attribution: National Weather Service
+  notes:
+  - Feature-flagged in Sentinel today. Matrix target is always-on CAP ingest.
+- id: gdacs-rss
+  provider: gdacs
+  title: GDACS RSS
+  kind: rss
+  url: https://www.gdacs.org/xml/rss.xml
+  cadence: 5m
+  cel_codes:
+  - disaster.geophysical.earthquake
+  - disaster.geophysical.tsunami
+  - disaster.geophysical.volcano
+  - disaster.meteorological.tropical_cyclone
+  - disaster.hydrological.flood
+  - disaster.hydrological.drought
+  ingest_status: implemented
+  attribution: Global Disaster Alert and Coordination System
+- id: nasa-eonet
+  provider: nasa
+  title: NASA EONET events
+  kind: geojson
+  url: https://eonet.gsfc.nasa.gov/api/v3/events
+  cadence: 5m
+  cel_codes:
+  - disaster.fire.wildland
+  - disaster.geophysical.volcano
+  - disaster.hydrological.flood
+  - disaster.meteorological.severe_storm
+  ingest_status: implemented
+  attribution: NASA Earth Observatory Natural Event Tracker
+- id: wfigs-incidents
+  provider: nifc
+  title: WFIGS active wildfire incidents
+  kind: geojson
+  url: https://services3.arcgis.com/T4QMspbfLg3qTGWY/arcgis/rest/services/WFIGS_Incident_Locations_Current/FeatureServer/0/query
+  cadence: 5m
+  cel_codes:
+  - disaster.fire.wildland
+  ingest_status: implemented
+  attribution: Wildland Fire Interagency Geospatial Services / NIFC
+- id: nasa-firms
+  provider: nasa
+  title: NASA FIRMS VIIRS/MODIS hotspots
+  kind: csv
+  url: https://firms.modaps.eosdis.nasa.gov/api/area/csv
+  cadence: 5m
+  cel_codes:
+  - disaster.fire.wildland
+  ingest_status: planned
+  attribution: NASA Fire Information for Resource Management System
+  notes:
+  - Open MAP_KEY signup. Not an authenticated SaaS product feed.
+- id: nhc-atlantic-rss
+  provider: nhc
+  title: NHC Atlantic tropical weather RSS
+  kind: rss
+  url: https://www.nhc.noaa.gov/index-at.xml
+  cadence: 5m
+  cel_codes:
+  - disaster.meteorological.tropical_cyclone
+  ingest_status: implemented
+  attribution: NOAA National Hurricane Center
+- id: ptwc-tsunami-atom
+  provider: ptwc
+  title: PTWC tsunami bulletins
+  kind: atom
+  url: https://www.tsunami.gov/events/xml/PAAQAtom.xml
+  cadence: 60s
+  cel_codes:
+  - disaster.geophysical.tsunami
+  ingest_status: implemented
+  attribution: Pacific Tsunami Warning Center
+- id: usgs-volcano
+  provider: usgs
+  title: USGS volcano notices
+  kind: rss
+  url: https://volcanoes.usgs.gov/vhp/notice_rss.php
+  cadence: 15m
+  cel_codes:
+  - disaster.geophysical.volcano
+  ingest_status: planned
+  attribution: USGS Volcano Hazards Program
+- id: noaa-swpc-alerts
+  provider: swpc
+  title: NOAA SWPC space-weather alerts
+  kind: rest
+  url: https://services.swpc.noaa.gov/products/alerts.json
+  cadence: 5m
+  cel_codes:
+  - disaster.extraterrestrial.space_weather
+  ingest_status: implemented
+  attribution: NOAA Space Weather Prediction Center
+  notes:
+  - JSON alerts product; treat as rest/rss-equivalent ingest.
+- id: reliefweb-disasters
+  provider: reliefweb
+  title: ReliefWeb disasters RSS
+  kind: rss
+  url: https://reliefweb.int/updates/rss.xml?sl[0]=primary_country_iso3%3Ausa&search=disaster
+  cadence: 15m
+  cel_codes:
+  - disaster.geophysical.earthquake
+  - disaster.hydrological.flood
+  - disaster.meteorological.tropical_cyclone
+  - disaster.biological.disease_outbreak
+  ingest_status: planned
+  attribution: ReliefWeb / OCHA
+- id: drought-monitor
+  provider: ndmc
+  title: US Drought Monitor
+  kind: rest
+  url: https://droughtmonitor.unl.edu/
+  cadence: 1d
+  cel_codes:
+  - disaster.hydrological.drought
+  ingest_status: planned
+  attribution: National Drought Mitigation Center
+- id: airnow
+  provider: airnow
+  title: AirNow AQI
+  kind: rest
+  url: https://www.airnowapi.org/
+  cadence: 1h
+  cel_codes:
+  - disaster.environmental.air_quality
+  - disaster.environmental.smoke
+  ingest_status: planned
+  attribution: U.S. EPA AirNow
+  notes:
+  - May require a free MAP key. Confirm ADR-002 before enabling.
