@@ -1,0 +1,155 @@
+id: cel.taxonomy.disasters
+version: "0.1.0"
+cel_spec: "0.1.0"
+title: CEL Disaster Incident Language
+description: >
+  Speakable, finite incident words for Sentinel-class open feeds.
+  This is the CEL language, not a copy of UNDRR HIPs or CAP.
+  HIP / GLIDE / CAP identifiers belong in profiles[] so machines can
+  interoperate without forcing crews to speak GH0101.
+namespace: disaster
+root: disaster
+codes:
+  - code: disaster
+    label: Disaster
+    spoken: disaster
+    kind: root
+    description: Root of the CEL v0 incident language.
+    children:
+      - disaster.fire
+      - disaster.geophysical
+      - disaster.meteorological
+      - disaster.hydrological
+
+  - code: disaster.fire
+    label: Fire
+    spoken: disaster fire
+    kind: category
+    parent: disaster
+    description: Unwanted combustion incidents.
+    children:
+      - disaster.fire.wildland
+      - disaster.fire.structure
+
+  - code: disaster.fire.wildland
+    label: Wildland fire
+    spoken: disaster fire wildland
+    kind: leaf
+    parent: disaster.fire
+    description: Vegetation fire (wildfire) affecting or approaching a site.
+    profiles:
+      undrr_hip: EN0205
+      glide: WF
+      cap_category: Fire
+    children: []
+
+  - code: disaster.fire.structure
+    label: Structure fire
+    spoken: disaster fire structure
+    kind: leaf
+    parent: disaster.fire
+    description: Fire involving a building or enclosed structure.
+    profiles:
+      cap_category: Fire
+    children: []
+
+  - code: disaster.geophysical
+    label: Geophysical
+    spoken: disaster geophysical
+    kind: category
+    parent: disaster
+    description: Earth-process incidents.
+    children:
+      - disaster.geophysical.earthquake
+      - disaster.geophysical.tsunami
+
+  - code: disaster.geophysical.earthquake
+    label: Earthquake
+    spoken: disaster geophysical earthquake
+    kind: leaf
+    parent: disaster.geophysical
+    description: Seismic event. USGS and GDACS earthquake records map here.
+    profiles:
+      undrr_hip: GH0101
+      glide: EQ
+      cap_event: Earthquake
+    children: []
+
+  - code: disaster.geophysical.tsunami
+    label: Tsunami
+    spoken: disaster geophysical tsunami
+    kind: leaf
+    parent: disaster.geophysical
+    description: >
+      Tsunami-related incident. GDACS TS maps here. A USGS earthquake
+      tsunami=1 flag is a related hint, not a tsunami catalog.
+    profiles:
+      undrr_hip: MH0705
+      glide: TS
+      cap_event: Tsunami
+    children: []
+
+  - code: disaster.meteorological
+    label: Meteorological
+    spoken: disaster meteorological
+    kind: category
+    parent: disaster
+    description: Weather incidents in the NWS / GDACS-class set.
+    children:
+      - disaster.meteorological.severe_storm
+      - disaster.meteorological.tropical_cyclone
+      - disaster.meteorological.extreme_heat
+
+  - code: disaster.meteorological.severe_storm
+    label: Severe storm
+    spoken: disaster meteorological severe storm
+    kind: leaf
+    parent: disaster.meteorological
+    description: Severe thunderstorm / convective storm and NWS-class equivalents.
+    profiles:
+      undrr_hip: MH0103
+      cap_event: Severe Thunderstorm Warning
+    children: []
+
+  - code: disaster.meteorological.tropical_cyclone
+    label: Tropical cyclone
+    spoken: disaster meteorological tropical cyclone
+    kind: leaf
+    parent: disaster.meteorological
+    description: Tropical cyclone / hurricane / typhoon. GDACS TC maps here.
+    profiles:
+      undrr_hip: MH0309
+      glide: TC
+      cap_event: Hurricane
+    children: []
+
+  - code: disaster.meteorological.extreme_heat
+    label: Extreme heat
+    spoken: disaster meteorological extreme heat
+    kind: leaf
+    parent: disaster.meteorological
+    description: Extreme heat / excessive heat NWS-class hazard.
+    profiles:
+      cap_event: Excessive Heat Warning
+    children: []
+
+  - code: disaster.hydrological
+    label: Hydrological
+    spoken: disaster hydrological
+    kind: category
+    parent: disaster
+    description: Water-related incidents.
+    children:
+      - disaster.hydrological.flood
+
+  - code: disaster.hydrological.flood
+    label: Flood
+    spoken: disaster hydrological flood
+    kind: leaf
+    parent: disaster.hydrological
+    description: Flooding. GDACS FL and NWS flood maps here.
+    profiles:
+      undrr_hip: MH0600
+      glide: FL
+      cap_event: Flood Warning
+    children: []

@@ -1,0 +1,23 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://openeno.dev/cel/schemas/response_state.json",
+  "title": "CelResponseState",
+  "description": "One speakable CEL response-state vocabulary entry. Not a CAP urgency/severity/certainty triple. Not an OIDF commissioning state.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["id", "label", "spoken"],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^response\\.[a-z][a-z0-9_]*$",
+      "description": "Speakable dotted CEL word, for example response.isolate_load."
+    },
+    "label": { "type": "string", "minLength": 1 },
+    "spoken": {
+      "type": "string",
+      "minLength": 1,
+      "description": "The same word with dots and underscores turned into spaces."
+    },
+    "description": { "type": "string" }
+  }
+}

@@ -1,0 +1,108 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://openeno.dev/cel/schemas/feed_crosswalk.json",
+  "title": "CelFeedCrosswalk",
+  "description": "Map from an external hazard feed (USGS, GDACS, CAP, Sentinel) to speakable CEL incident words. Dictionary only — not an ingest runtime.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "id",
+    "version",
+    "cel_spec",
+    "title",
+    "source",
+    "maps"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^cel\\.crosswalk\\.[a-z][a-z0-9_]*$"
+    },
+    "version": { "type": "string", "minLength": 1 },
+    "cel_spec": { "type": "string", "const": "0.1.0" },
+    "title": { "type": "string", "minLength": 1 },
+    "description": { "type": "string" },
+    "source": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["provider", "feed"],
+      "properties": {
+        "provider": { "type": "string", "minLength": 1 },
+        "feed": { "type": "string", "minLength": 1 },
+        "url": { "type": "string", "minLength": 1 },
+        "attribution": { "type": "string" },
+        "license_note": { "type": "string" }
+      }
+    },
+    "maps": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "$ref": "#/$defs/mapRule" }
+    },
+    "unmapped_source_types": {
+      "type": "array",
+      "items": { "type": "string", "minLength": 1 },
+      "uniqueItems": true
+    },
+    "notes": {
+      "type": "array",
+      "items": { "type": "string" }
+    }
+  },
+  "$defs": {
+    "mapRule": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "match", "cel_code", "confidence"],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9-]*$"
+        },
+        "match": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["field", "equals"],
+          "properties": {
+            "field": {
+              "type": "string",
+              "minLength": 1
+            },
+            "equals": {
+              "type": ["string", "integer", "boolean"]
+            }
+          }
+        },
+        "cel_code": {
+          "type": "string",
+          "pattern": "^disaster(\\.[a-z][a-z0-9_]*)+$",
+          "description": "Speakable CEL incident word. Not a HIP code."
+        },
+        "confidence": {
+          "type": "string",
+          "enum": ["authoritative", "related_hint"]
+        },
+        "profiles": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "undrr_hip": {
+              "type": "string",
+              "pattern": "^[A-Z]{2}[0-9]{4}$"
+            },
+            "glide": {
+              "type": "string",
+              "pattern": "^[A-Z]{2}$"
+            },
+            "cap_event": { "type": "string", "minLength": 1 },
+            "cap_category": { "type": "string", "minLength": 1 }
+          }
+        },
+        "notes": {
+          "type": "array",
+          "items": { "type": "string" }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,81 @@
+id: cel.crosswalk.usgs_earthquake
+version: "0.1.0"
+cel_spec: "0.1.0"
+title: USGS earthquake feed → CEL incident words
+description: >
+  Maps USGS GeoJSON (and CAP-shaped earthquake alerts) into speakable CEL
+  words. This file is a dictionary. It does not poll USGS, store
+  observations, or decide response states. Sentinel (later) consumes these
+  mappings; it must not mint CEL words of its own.
+source:
+  provider: usgs
+  feed: usgs_earthquake_geojson
+  url: https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_day.geojson
+  attribution: U.S. Geological Survey Earthquake Hazards Program
+  license_note: >
+    USGS data are public domain; operators must verify current terms at
+    https://www.usgs.gov/information-policies-and-instructions
+maps:
+  - id: usgs-type-earthquake
+    match:
+      field: properties.type
+      equals: earthquake
+    cel_code: disaster.geophysical.earthquake
+    confidence: authoritative
+    profiles:
+      undrr_hip: GH0101
+      glide: EQ
+      cap_event: Earthquake
+    notes:
+      - USGS GeoJSON Feature.properties.type for tectonic earthquakes.
+
+  - id: sentinel-hazard-earthquake
+    match:
+      field: hazard_type
+      equals: earthquake
+    cel_code: disaster.geophysical.earthquake
+    confidence: authoritative
+    profiles:
+      undrr_hip: GH0101
+    notes:
+      - Sentinel normalized Hazard Observation v1 field.
+      - Defined here so Sentinel maps to CEL instead of inventing codes.
+
+  - id: cap-event-earthquake
+    match:
+      field: cap.event
+      equals: Earthquake
+    cel_code: disaster.geophysical.earthquake
+    confidence: authoritative
+    profiles:
+      undrr_hip: GH0101
+      cap_event: Earthquake
+    notes:
+      - CAP 1.2 event text when an earthquake alert is already in CAP.
+      - CEL does not redefine CAP; it names the CEL word the alert becomes.
+
+  - id: usgs-tsunami-flag
+    match:
+      field: properties.tsunami
+      equals: 1
+    cel_code: disaster.geophysical.tsunami
+    confidence: related_hint
+    profiles:
+      undrr_hip: MH0705
+      glide: TS
+    notes:
+      - USGS tsunami=1 is a related-product flag on an earthquake record.
+      - Treat as a hint alongside disaster.geophysical.earthquake, not a replacement.
+
+unmapped_source_types:
+  - quarry
+  - explosion
+  - nuclear explosion
+  - landslide
+  - rock burst
+  - mine collapse
+  - experimental explosion
+notes:
+  - Magnitude, PAGER alert, and depth are observation attributes, not CEL words.
+  - Response states (monitor, isolate_load, …) are not assigned by this crosswalk.
+  - UNDRR HIP GH0101 is a profile on the CEL word, not the identifier crews use.

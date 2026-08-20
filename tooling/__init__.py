@@ -1,0 +1,1 @@
+"""CEL format validation helpers."""
