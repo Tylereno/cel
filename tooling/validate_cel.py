@@ -203,11 +203,14 @@ def main() -> int:
     validate_instance(taxonomy, schemas["incident_taxonomy"], registry, taxonomy_path)
     codes = taxonomy_index(taxonomy, taxonomy_path)
 
-    machine_path = ROOT / "response_machines" / "wildland_proximity.json"
-    machine = load_json(machine_path)
-    reject_commissioning_keys(machine, machine_path)
-    validate_instance(machine, schemas["response_machine"], registry, machine_path)
-    validate_machine(machine, codes, machine_path)
+    machine_paths = sorted((ROOT / "response_machines").glob("*.json"))
+    if not machine_paths:
+        raise ValueError("no response machines found")
+    for machine_path in machine_paths:
+        machine = load_json(machine_path)
+        reject_commissioning_keys(machine, machine_path)
+        validate_instance(machine, schemas["response_machine"], registry, machine_path)
+        validate_machine(machine, codes, machine_path)
 
     crosswalks = load_crosswalks()
     if not crosswalks:
@@ -225,7 +228,7 @@ def main() -> int:
 
     print("CEL v0 artifacts validated.")
     print(f"  taxonomy codes: {len(codes)}")
-    print(f"  wildland states: {len(machine['states'])}")
+    print(f"  response machines: {len(machine_paths)}")
     print(f"  crosswalk files: {len(crosswalks)}")
     print(f"  feed matrix sources: {len(matrix['sources'])}")
     return 0

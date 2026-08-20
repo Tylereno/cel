@@ -1,0 +1,117 @@
+{
+  "id": "cel.response.flood_proximity",
+  "version": "0.1.0",
+  "cel_spec": "0.1.0",
+  "title": "Flood proximity response machine",
+  "description": "Allowed emergency response states for a site near flooding. CEL names speakable states and transitions. Consumer policy (for example VITO) decides when a named event fires. This machine is not an OIDF commissioning SAT, not a CAP alert, and carries no evidence gates.",
+  "incident_types": [
+    "disaster.hydrological.flood",
+    "disaster.hydrological.flash_flood"
+  ],
+  "subject_kind": "site",
+  "initial_state": "response.monitor",
+  "states": [
+    {
+      "id": "response.monitor",
+      "label": "Monitor",
+      "spoken": "response monitor",
+      "description": "Watch the incident. No extra site posture is implied."
+    },
+    {
+      "id": "response.escalate",
+      "label": "Escalate",
+      "spoken": "response escalate",
+      "description": "Elevated attention. Notify or review per consumer policy."
+    },
+    {
+      "id": "response.isolate_load",
+      "label": "Isolate load",
+      "spoken": "response isolate load",
+      "description": "Non-life-safety load isolation is an allowed posture. CEL does not trip breakers."
+    },
+    {
+      "id": "response.shelter",
+      "label": "Shelter",
+      "spoken": "response shelter",
+      "description": "Life-safety / shelter posture. CEL does not issue the directive."
+    },
+    {
+      "id": "response.recover",
+      "label": "Recover",
+      "spoken": "response recover",
+      "description": "Hazard receding. Return path toward monitor."
+    }
+  ],
+  "transitions": [
+    {
+      "id": "detect_proximity",
+      "event": "flood.proximity_detected",
+      "from": "response.monitor",
+      "to": "response.escalate",
+      "description": "Flood threat is near enough that consumer policy raises attention."
+    },
+    {
+      "id": "clear_proximity",
+      "event": "flood.proximity_cleared",
+      "from": "response.escalate",
+      "to": "response.monitor",
+      "description": "Proximity no longer meets the consumer watch threshold."
+    },
+    {
+      "id": "isolate_noncritical_load",
+      "event": "flood.isolate_load_authorized",
+      "from": "response.escalate",
+      "to": "response.isolate_load",
+      "description": "Policy authorizes isolating non-life-safety load. Thresholds live in the consumer."
+    },
+    {
+      "id": "restore_load_watch",
+      "event": "flood.load_restored_watch",
+      "from": "response.isolate_load",
+      "to": "response.escalate",
+      "description": "Load isolation lifted while the incident remains in watch."
+    },
+    {
+      "id": "shelter_from_escalate",
+      "event": "flood.life_safety_shelter",
+      "from": "response.escalate",
+      "to": "response.shelter",
+      "description": "Life-safety shelter posture from elevated watch."
+    },
+    {
+      "id": "shelter_from_isolate",
+      "event": "flood.life_safety_shelter",
+      "from": "response.isolate_load",
+      "to": "response.shelter",
+      "description": "Life-safety shelter posture from load-isolated posture."
+    },
+    {
+      "id": "recover_from_escalate",
+      "event": "flood.hazard_receding",
+      "from": "response.escalate",
+      "to": "response.recover",
+      "description": "Incident receding from elevated watch."
+    },
+    {
+      "id": "recover_from_isolate",
+      "event": "flood.hazard_receding",
+      "from": "response.isolate_load",
+      "to": "response.recover",
+      "description": "Incident receding from load-isolated posture."
+    },
+    {
+      "id": "recover_from_shelter",
+      "event": "flood.hazard_receding",
+      "from": "response.shelter",
+      "to": "response.recover",
+      "description": "Incident receding from shelter posture."
+    },
+    {
+      "id": "resume_monitor",
+      "event": "flood.return_to_watch",
+      "from": "response.recover",
+      "to": "response.monitor",
+      "description": "Return to routine monitoring after recovery."
+    }
+  ]
+}

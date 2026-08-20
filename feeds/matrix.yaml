@@ -26,7 +26,7 @@ sources:
   cadence: 60s
   cel_codes:
   - disaster.geophysical.earthquake
-  ingest_status: planned
+  ingest_status: implemented
   attribution: U.S. Geological Survey Earthquake Hazards Program
 - id: nws-cap-active
   provider: nws
@@ -155,28 +155,30 @@ sources:
   - disaster.hydrological.flood
   - disaster.meteorological.tropical_cyclone
   - disaster.biological.disease_outbreak
-  ingest_status: planned
+  ingest_status: implemented
   attribution: ReliefWeb / OCHA
+  notes:
+  - Requires RELIEFWEB_APPNAME env (approved appname). Adapter skips live pull when unset.
 - id: drought-monitor
   provider: ndmc
   title: US Drought Monitor
   kind: rest
-  url: https://droughtmonitor.unl.edu/
+  url: https://mesonet.agron.iastate.edu/geojson/usdm.py
   cadence: 1d
   cel_codes:
   - disaster.hydrological.drought
-  ingest_status: planned
-  attribution: National Drought Mitigation Center
+  ingest_status: implemented
+  attribution: National Drought Mitigation Center / Iowa Environmental Mesonet
 - id: airnow
   provider: airnow
   title: AirNow AQI
   kind: rest
-  url: https://www.airnowapi.org/
+  url: https://www.airnowapi.org/aq/observation/zipCode/current/
   cadence: 1h
   cel_codes:
   - disaster.environmental.air_quality
   - disaster.environmental.smoke
-  ingest_status: planned
+  ingest_status: implemented
   attribution: U.S. EPA AirNow
   notes:
-  - May require a free MAP key. Confirm ADR-002 before enabling.
+  - Requires AIRNOW_API_KEY env. Adapter skips live pull when unset.

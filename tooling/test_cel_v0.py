@@ -32,6 +32,46 @@ class CelV0ScaffoldTests(unittest.TestCase):
         self.assertNotIn("just use hip", readme)
         self.assertNotIn("mission-scoped to sentinel-class feeds", readme)
 
+    def test_response_machines_share_handout_states(self) -> None:
+        expected_states = {
+            "response.monitor",
+            "response.escalate",
+            "response.isolate_load",
+            "response.shelter",
+            "response.recover",
+        }
+        for name in (
+            "wildland_proximity.json",
+            "earthquake_proximity.json",
+            "flood_proximity.json",
+        ):
+            machine = json.loads(
+                (ROOT / "response_machines" / name).read_text(encoding="utf-8")
+            )
+            state_ids = {state["id"] for state in machine["states"]}
+            self.assertEqual(state_ids, expected_states)
+            self.assertEqual(machine["subject_kind"], "site")
+            self.assertNotIn("evidence_requirements", machine)
+
+    def test_earthquake_machine_targets_geophysical_earthquake(self) -> None:
+        machine = json.loads(
+            (ROOT / "response_machines" / "earthquake_proximity.json").read_text(
+                encoding="utf-8"
+            )
+        )
+        self.assertEqual(machine["incident_types"], ["disaster.geophysical.earthquake"])
+
+    def test_flood_machine_targets_hydrological_flood_codes(self) -> None:
+        machine = json.loads(
+            (ROOT / "response_machines" / "flood_proximity.json").read_text(
+                encoding="utf-8"
+            )
+        )
+        self.assertEqual(
+            machine["incident_types"],
+            ["disaster.hydrological.flood", "disaster.hydrological.flash_flood"],
+        )
+
     def test_response_machine_has_handout_states(self) -> None:
         machine = json.loads(
             (ROOT / "response_machines" / "wildland_proximity.json").read_text(
@@ -105,12 +145,15 @@ class CelV0ScaffoldTests(unittest.TestCase):
         self.assertEqual(by_event["VO"], "disaster.geophysical.volcano")
         self.assertEqual(by_event["DR"], "disaster.hydrological.drought")
 
-    def test_feed_matrix_names_planned_sources(self) -> None:
+    def test_feed_matrix_names_all_implemented_sources(self) -> None:
         matrix = yaml.safe_load((ROOT / "feeds" / "matrix.yaml").read_text(encoding="utf-8"))
         by_id = {row["id"]: row for row in matrix["sources"]}
-        self.assertGreaterEqual(len(by_id), 10)
+        self.assertEqual(len(by_id), 14)
+        self.assertTrue(
+            all(row["ingest_status"] == "implemented" for row in matrix["sources"])
+        )
         self.assertEqual(by_id["usgs-earthquake-geojson"]["ingest_status"], "implemented")
-        self.assertEqual(by_id["gdacs-rss"]["ingest_status"], "planned")
+        self.assertEqual(by_id["gdacs-rss"]["ingest_status"], "implemented")
         self.assertEqual(by_id["nhc-atlantic-rss"]["kind"], "rss")
         self.assertIn("disaster.extraterrestrial.space_weather", by_id["noaa-swpc-alerts"]["cel_codes"])
 
