@@ -1,0 +1,159 @@
+id: cel.crosswalk.nws_cap
+version: "0.1.0"
+cel_spec: "0.1.0"
+title: NWS CAP event → CEL incident words
+description: >
+  Maps National Weather Service CAP event titles into speakable CEL words.
+  Sentinel consumes CAP; CEL does not fork CAP. Response states are not
+  assigned here — VITO applies policy to observations.
+source:
+  provider: nws
+  feed: nws_cap
+  url: https://api.weather.gov/alerts/active
+  attribution: National Weather Service
+  license_note: NWS data are public; User-Agent identification required for live access.
+maps:
+  - id: nws-severe-thunderstorm
+    match:
+      field: cap.event
+      equals: Severe Thunderstorm Warning
+    cel_code: disaster.meteorological.severe_storm
+    confidence: authoritative
+    profiles:
+      undrr_hip: MH0103
+      cap_event: Severe Thunderstorm Warning
+
+  - id: nws-tornado
+    match:
+      field: cap.event
+      equals: Tornado Warning
+    cel_code: disaster.meteorological.tornado
+    confidence: authoritative
+    profiles:
+      undrr_hip: MH0305
+      cap_event: Tornado Warning
+
+  - id: nws-hurricane
+    match:
+      field: cap.event
+      equals: Hurricane Warning
+    cel_code: disaster.meteorological.tropical_cyclone
+    confidence: authoritative
+    profiles:
+      undrr_hip: MH0309
+      cap_event: Hurricane Warning
+
+  - id: nws-flash-flood
+    match:
+      field: cap.event
+      equals: Flash Flood Warning
+    cel_code: disaster.hydrological.flash_flood
+    confidence: authoritative
+    profiles:
+      undrr_hip: MH0603
+      cap_event: Flash Flood Warning
+
+  - id: nws-flood
+    match:
+      field: cap.event
+      equals: Flood Warning
+    cel_code: disaster.hydrological.flood
+    confidence: authoritative
+    profiles:
+      undrr_hip: MH0600
+      cap_event: Flood Warning
+
+  - id: nws-coastal-flood
+    match:
+      field: cap.event
+      equals: Coastal Flood Warning
+    cel_code: disaster.hydrological.coastal_flood
+    confidence: authoritative
+    profiles:
+      undrr_hip: MH0601
+      cap_event: Coastal Flood Warning
+
+  - id: nws-storm-surge
+    match:
+      field: cap.event
+      equals: Storm Surge Warning
+    cel_code: disaster.hydrological.storm_surge
+    confidence: authoritative
+    profiles:
+      undrr_hip: MH0703
+      cap_event: Storm Surge Warning
+
+  - id: nws-winter-storm
+    match:
+      field: cap.event
+      equals: Winter Storm Warning
+    cel_code: disaster.meteorological.winter_storm
+    confidence: authoritative
+    profiles:
+      undrr_hip: MH0406
+      cap_event: Winter Storm Warning
+
+  - id: nws-blizzard
+    match:
+      field: cap.event
+      equals: Blizzard Warning
+    cel_code: disaster.meteorological.winter_storm
+    confidence: authoritative
+    profiles:
+      undrr_hip: MH0406
+      cap_event: Blizzard Warning
+
+  - id: nws-heat
+    match:
+      field: cap.event
+      equals: Excessive Heat Warning
+    cel_code: disaster.meteorological.extreme_heat
+    confidence: authoritative
+    profiles:
+      undrr_hip: MH0501
+      cap_event: Excessive Heat Warning
+
+  - id: nws-cold
+    match:
+      field: cap.event
+      equals: Extreme Cold Warning
+    cel_code: disaster.meteorological.extreme_cold
+    confidence: authoritative
+    profiles:
+      undrr_hip: MH0502
+      cap_event: Extreme Cold Warning
+
+  - id: nws-high-wind
+    match:
+      field: cap.event
+      equals: High Wind Warning
+    cel_code: disaster.meteorological.high_wind
+    confidence: authoritative
+    profiles:
+      undrr_hip: MH0301
+      cap_event: High Wind Warning
+
+  - id: nws-tsunami
+    match:
+      field: cap.event
+      equals: Tsunami Warning
+    cel_code: disaster.geophysical.tsunami
+    confidence: authoritative
+    profiles:
+      undrr_hip: MH0705
+      cap_event: Tsunami Warning
+
+  - id: nws-red-flag
+    match:
+      field: cap.event
+      equals: Red Flag Warning
+    cel_code: disaster.fire.wildland
+    confidence: related_hint
+    profiles:
+      undrr_hip: EN0205
+      cap_event: Red Flag Warning
+    notes:
+      - Red Flag is fire-weather potential, not an active wildfire incident.
+notes:
+  - CAP urgency/severity/certainty stay on the observation. They are not CEL response states.
+  - VITO, not Sentinel, decides monitor / escalate / isolate_load.

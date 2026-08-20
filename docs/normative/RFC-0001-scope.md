@@ -5,7 +5,7 @@
 
 ## One sentence
 
-CEL is a small language that humans can speak and machines can validate:
+CEL is a language that humans can speak and machines can validate:
 incident words (`disaster.fire.wildland`) and response words
 (`response.isolate_load`).
 
@@ -21,9 +21,8 @@ Those systems are real and CEL **profiles** them. They are not the language.
 | NIMS / ICS | Human doctrine, not a state machine | Buyer docs only. |
 | OIDF | Yes, but for commissioning evidence | Sibling format. Do not merge. |
 
-The gap CEL fills is the missing **readable response layer** for automated
-edge systems, plus a **readable incident layer** those machines can share
-with people.
+The gap CEL fills is a **readable incident layer** plus a **readable
+response layer** for automated edge systems.
 
 ## OpenEno vs EnoTech
 
@@ -50,18 +49,18 @@ Forbidden in this repository:
 - A forked CAP / EDXL schema
 - Hardware BOMs and sourcing
 
+See [RFC-0004](./RFC-0004-ingest-vs-decision.md) for Sentinel vs VITO.
+
 ## Response vs commissioning state
 
 An OIDF equipment machine (Procured → Energized) and a CEL response machine
 (`monitor` → `isolate_load`) are different state spaces. A site may be
-OIDF-energized and CEL-`response.shelter` at the same time. Consumers must
-not treat a CEL transition as commissioning evidence, or an OIDF gate as an
-emergency response directive.
+OIDF-energized and CEL-`response.shelter` at the same time.
 
 ## Consumers
 
 | Product | Allowed use of CEL | Must not do |
 |---|---|---|
-| Sentinel | Map observations to CEL incident words via `crosswalks/` | Mint new CEL words; decide actuation |
-| VITO | Apply local policy that *fires* named CEL transitions | Redefine the taxonomy or machine |
+| Sentinel | Map observations to CEL incident words via `crosswalks/` and `feeds/` | Mint new CEL words; decide or suggest actions |
+| VITO | Apply local policy that fires named CEL transitions; suggest next posture | Redefine the taxonomy or scrape feeds as if it were Sentinel |
 | Keel / OIDF | Ignore CEL, or read it only as unrelated site context | Import CEL states into SAT / ledger semantics |

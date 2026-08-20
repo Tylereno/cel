@@ -178,6 +178,22 @@ def load_crosswalks() -> list[tuple[Path, dict[str, Any]]]:
     return [(path, load_yaml(path)) for path in paths]
 
 
+def validate_feed_matrix(matrix: dict[str, Any], codes: dict[str, dict[str, Any]], path: Path) -> None:
+    seen: set[str] = set()
+    for source in matrix["sources"]:
+        source_id = source["id"]
+        if source_id in seen:
+            raise ValueError(f"{path}: duplicate source id {source_id}")
+        seen.add(source_id)
+        for cel_code in source["cel_codes"]:
+            if HIP_CODE.match(cel_code):
+                raise ValueError(f"{path}: source {source_id} used a HIP code as cel_code")
+            if cel_code not in codes:
+                raise ValueError(f"{path}: source {source_id} references unknown code {cel_code}")
+            if codes[cel_code].get("kind") != "leaf":
+                raise ValueError(f"{path}: source {source_id} must target a leaf code ({cel_code})")
+
+
 def main() -> int:
     schemas, registry = schema_registry()
 
@@ -201,10 +217,17 @@ def main() -> int:
         validate_instance(crosswalk, schemas["feed_crosswalk"], registry, path)
         validate_crosswalk(crosswalk, codes, path)
 
+    matrix_path = ROOT / "feeds" / "matrix.yaml"
+    matrix = load_yaml(matrix_path)
+    reject_commissioning_keys(matrix, matrix_path)
+    validate_instance(matrix, schemas["feed_matrix"], registry, matrix_path)
+    validate_feed_matrix(matrix, codes, matrix_path)
+
     print("CEL v0 artifacts validated.")
     print(f"  taxonomy codes: {len(codes)}")
     print(f"  wildland states: {len(machine['states'])}")
     print(f"  crosswalk files: {len(crosswalks)}")
+    print(f"  feed matrix sources: {len(matrix['sources'])}")
     return 0
 
 

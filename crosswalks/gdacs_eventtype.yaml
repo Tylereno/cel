@@ -57,11 +57,27 @@ maps:
       - IFRC Monty maps GDACS TC → MH0306 (Depression or Cyclone). Consumers
         that need Monty-compat may also accept MH0306 as a HIP profile.
 
+  - id: gdacs-vo
+    match:
+      field: eventtype
+      equals: VO
+    cel_code: disaster.geophysical.volcano
+    confidence: authoritative
+    profiles:
+      undrr_hip: GH0201
+      glide: VO
+
+  - id: gdacs-dr
+    match:
+      field: eventtype
+      equals: DR
+    cel_code: disaster.hydrological.drought
+    confidence: authoritative
+    profiles:
+      undrr_hip: MH0401
+      glide: DR
+
 unmapped_source_types:
-  - VO
-  - DR
   - WF
 notes:
-  - VO (volcano) and DR (drought) have HIP profiles but no CEL v0 leaf yet.
-  - Do not mint disaster.volcano in this crosswalk; extend the taxonomy first.
-  - Response states are not assigned here.
+  - Response states are not assigned here. VITO applies policy.

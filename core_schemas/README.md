@@ -16,6 +16,7 @@ git commit (or a future annotated tag) rather than fetching schemas by URL.
 | [`response_state.json`](./response_state.json) | One response-state vocabulary entry |
 | [`response_machine.json`](./response_machine.json) | Emergency response FSMs (`response_machines/*.json`) |
 | [`feed_crosswalk.json`](./feed_crosswalk.json) | External feed → CEL word maps (`crosswalks/*.yaml`) |
+| [`feed_matrix.json`](./feed_matrix.json) | Ingest source catalog (`feeds/matrix.yaml`) |
 
 **Spec:** CEL `0.1.0` (lab)
 

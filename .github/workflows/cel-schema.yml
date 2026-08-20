@@ -9,6 +9,7 @@ on:
       - "taxonomies/**"
       - "response_machines/**"
       - "crosswalks/**"
+      - "feeds/**"
       - "tooling/**"
       - ".github/workflows/cel-schema.yml"
 
