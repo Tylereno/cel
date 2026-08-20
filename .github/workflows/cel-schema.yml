@@ -1,0 +1,32 @@
+name: CEL v0 schema CI
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+    paths:
+      - "core_schemas/**"
+      - "taxonomies/**"
+      - "response_machines/**"
+      - "crosswalks/**"
+      - "tooling/**"
+      - ".github/workflows/cel-schema.yml"
+
+jobs:
+  validate-cel:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install jsonschema + PyYAML
+        run: python -m pip install "jsonschema>=4.0" "pyyaml>=6.0"
+
+      - name: Validate CEL artifacts
+        run: python tooling/validate_cel.py
+
+      - name: CEL v0 unit checks
+        run: python -m unittest tooling.test_cel_v0 -v

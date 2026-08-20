@@ -1,0 +1,67 @@
+id: cel.crosswalk.gdacs_eventtype
+version: "0.1.0"
+cel_spec: "0.1.0"
+title: GDACS eventtype → CEL incident words
+description: >
+  Maps GDACS eventtype codes into speakable CEL words. HIP / GLIDE columns
+  are profiles for interop (aligned with the IFRC Monty STAC extension).
+  CEL still speaks disaster.geophysical.earthquake, not GH0101.
+source:
+  provider: gdacs
+  feed: gdacs_eventtype
+  url: https://www.gdacs.org/gdacsapi/api/events/geteventlist/SEARCH
+  attribution: Global Disaster Alert and Coordination System (GDACS)
+  license_note: Verify current GDACS terms before production redistribution.
+maps:
+  - id: gdacs-eq
+    match:
+      field: eventtype
+      equals: EQ
+    cel_code: disaster.geophysical.earthquake
+    confidence: authoritative
+    profiles:
+      undrr_hip: GH0101
+      glide: EQ
+
+  - id: gdacs-ts
+    match:
+      field: eventtype
+      equals: TS
+    cel_code: disaster.geophysical.tsunami
+    confidence: authoritative
+    profiles:
+      undrr_hip: MH0705
+      glide: TS
+
+  - id: gdacs-fl
+    match:
+      field: eventtype
+      equals: FL
+    cel_code: disaster.hydrological.flood
+    confidence: authoritative
+    profiles:
+      undrr_hip: MH0600
+      glide: FL
+
+  - id: gdacs-tc
+    match:
+      field: eventtype
+      equals: TC
+    cel_code: disaster.meteorological.tropical_cyclone
+    confidence: authoritative
+    profiles:
+      undrr_hip: MH0309
+      glide: TC
+    notes:
+      - PreventionWeb lists Tropical Cyclone as MH0309.
+      - IFRC Monty maps GDACS TC → MH0306 (Depression or Cyclone). Consumers
+        that need Monty-compat may also accept MH0306 as a HIP profile.
+
+unmapped_source_types:
+  - VO
+  - DR
+  - WF
+notes:
+  - VO (volcano) and DR (drought) have HIP profiles but no CEL v0 leaf yet.
+  - Do not mint disaster.volcano in this crosswalk; extend the taxonomy first.
+  - Response states are not assigned here.
