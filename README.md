@@ -60,6 +60,7 @@ cel/
   response_machines/       # the CEL response words + allowed transitions
   crosswalks/              # USGS / GDACS / NWS CAP / HIP → CEL
   core_schemas/            # JSON Schema (OIDF-shaped layout, CEL semantics)
+  website/                 # read-only incident + response vocabulary explorer
   docs/normative/
 ```
 
@@ -83,6 +84,10 @@ disaster
 
 See [`taxonomies/disasters.yaml`](./taxonomies/disasters.yaml) for the full
 tree. See [`feeds/matrix.yaml`](./feeds/matrix.yaml) for the ingest matrix.
+
+The [`website/`](./website/) directory contains a static, read-only explorer for
+the incident taxonomy and response machines. It is a presentation surface, not a
+runtime or policy engine.
 
 ### Response words (separate dimension)
 
