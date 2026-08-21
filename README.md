@@ -1,6 +1,6 @@
 # CEL — Core Emergency Language
 
-**CEL is an OpenEno language.** Humans and machines share the same words.
+**CEL is an OpenLexicon language.** Humans and machines share the same words.
 
 You can say `disaster.fire.wildland` out loud. A schema can validate it. A
 site can sit in `response.isolate_load` without anyone translating
@@ -9,8 +9,10 @@ site can sit in `response.isolate_load` without anyone translating
 Stewarded by [Tyler Eno](https://tylereno.me/). Anyone may implement it.
 **CEL is not sold as a product.**
 
-Planned landing: `openeno.dev` and an `openeno` GitHub org. Until that move,
-this repository (`Tylereno/cel`) is the format source of truth.
+Target stewardship: the `OpenLexicon` GitHub organization and a public
+OpenLexicon documentation host selected by the founder. Until the repository
+transfer is complete, this repository (`Tylereno/cel`) remains the source of
+truth.
 
 ## Layers (do not collapse)
 
@@ -99,7 +101,25 @@ CAP urgency/severity/certainty describe an alert. They are not these states.
 - Runtime, ingest, or dashboards (Sentinel / VITO)
 - Commissioning SAT gates (OIDF + Keel)
 - A copy of the UNDRR HIP tree or a forked CAP schema
-- A public `enotech.systems` nav item
+- A runtime implementation or policy engine
+
+## Public explorer and hosting
+
+The [`website/`](./website/) directory is a generated-data, read-only explorer.
+The future public host should deploy only the four explorer assets
+(`index.html`, `styles.css`, `app.js`, and generated `data.js`) through GitHub
+Pages. The source files, validators, and private operational material must not
+be published as site content.
+
+The Enotech site may link to the explorer as a company-facing presentation, but
+the canonical source and contribution flow belong in this repository after the
+OpenLexicon transfer.
+
+## Contributing
+
+Start with [`CONTRIBUTING.md`](./CONTRIBUTING.md), [`GOVERNANCE.md`](./GOVERNANCE.md),
+and the pull request template. Proposals must keep CEL separate from Sentinel
+ingest, consumer policy, OIDF commissioning, and actuation.
 
 ## Validate locally
 
@@ -111,5 +131,5 @@ python3 -m unittest tooling.test_cel_v0 -v
 
 ## License
 
-Apache 2.0 — see [`LICENSE`](./LICENSE). Repo remains **private** until the
-founder flips visibility.
+Apache 2.0 — see [`LICENSE`](./LICENSE). Contributions are accepted under the
+Apache-2.0 terms with DCO sign-off; there is no CLA at this stage.

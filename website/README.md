@@ -22,5 +22,6 @@ Open <http://localhost:8787>.
 
 The explorer is a presentation surface only. CEL names incidents and allowed
 response postures; it does not ingest feeds, evaluate consumer policy, issue
-alerts, or actuate equipment. The future public landing destination is
-OpenEno/openeno.dev, pending a domain and visibility decision.
+alerts, or actuate equipment. The future public landing destination is the
+OpenLexicon organization and its selected documentation domain, pending the
+repository transfer and domain decision.
