@@ -18,9 +18,9 @@ class CelV0ScaffoldTests(unittest.TestCase):
     def test_validator_accepts_checked_in_artifacts(self) -> None:
         self.assertEqual(validate_cel.main(), 0)
 
-    def test_readme_states_openeno_stewardship_and_language(self) -> None:
+    def test_readme_states_openlexicon_stewardship_and_language(self) -> None:
         readme = (ROOT / "README.md").read_text(encoding="utf-8").lower()
-        self.assertIn("openeno", readme)
+        self.assertIn("openlexicon", readme)
         self.assertIn("steward", readme)
         self.assertIn("not sold as a product", readme)
         self.assertIn("sibling", readme)

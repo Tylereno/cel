@@ -24,22 +24,23 @@ Those systems are real and CEL **profiles** them. They are not the language.
 The gap CEL fills is a **readable incident layer** plus a **readable
 response layer** for automated edge systems.
 
-## OpenEno vs EnoTech
+## OpenLexicon vs EnoTech
 
 | Layer | What | Sold? |
 |---|---|---|
-| **OpenEno** | Format languages (OIDF, CEL) | No. Stewarded by Tyler Eno. Anyone may implement. |
+| **OpenLexicon** | Open format and language projects (OIDF, CEL) | No. Stewarded transparently; anyone may implement. |
 | **EnoTech** | Products and buyer programs (Keel, Sunwave, VITO, Sentinel) | Yes, as products/programs. |
 
-Do not add a sixth `enotech.systems` nav product until a published
-normative doc **and** at least one consumer exist.
+Do not treat CEL as an EnoTech product. It may be linked from the company site
+as an open language project, while its canonical source and governance live
+under OpenLexicon after the repository transfer.
 
 ## Sibling formats (do not collapse)
 
 | Format | Repo | Question |
 |---|---|---|
 | OIDF | `Tylereno/oidf` | Can this **asset** advance commissioning because the **evidence** is valid? |
-| CEL | `Tylereno/cel` | What **incident** is this, and what **response state** may automated systems enter? |
+| CEL | `OpenLexicon/cel` (transfer pending) | What **incident** is this, and what **response state** may automated systems enter? |
 
 Forbidden in this repository:
 

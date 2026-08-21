@@ -1,6 +1,6 @@
 # Normative CEL contracts
 
-**Ownership:** OpenEno format steward (Tyler Eno)
+**Ownership:** OpenLexicon project stewardship (transfer pending; Tyler Eno is provisional maintainer)
 **Role:** Human-readable contracts for the Core Emergency Language
 **Spec:** CEL v0.1.0 (lab)
 

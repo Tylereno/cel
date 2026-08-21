@@ -11,6 +11,7 @@ on:
       - "crosswalks/**"
       - "feeds/**"
       - "tooling/**"
+      - "website/**"
       - ".github/workflows/cel-schema.yml"
 
 jobs:
@@ -31,3 +32,9 @@ jobs:
 
       - name: CEL v0 unit checks
         run: python -m unittest tooling.test_cel_v0 -v
+
+      - name: Check explorer data snapshot
+        run: python website/build_snapshot.py --check
+
+      - name: Check explorer JavaScript
+        run: node --check website/app.js
