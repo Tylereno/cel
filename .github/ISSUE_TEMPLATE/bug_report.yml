@@ -1,0 +1,38 @@
+name: Bug report
+description: Report a validator, schema, generated snapshot, or explorer problem.
+title: "[Bug] "
+labels:
+  - bug
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Do not include secrets, customer data, live coordinates, or unredacted operational payloads.
+  - type: textarea
+    id: summary
+    attributes:
+      label: What happened?
+      description: Describe the observed behavior and the expected behavior.
+    validations:
+      required: true
+  - type: input
+    id: version
+    attributes:
+      label: CEL version or commit
+      placeholder: "0.1.0 / commit SHA"
+    validations:
+      required: true
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Reproduction
+      description: Include the smallest synthetic fixture or command that demonstrates the issue.
+    validations:
+      required: true
+  - type: checkboxes
+    id: boundary
+    attributes:
+      label: Boundary check
+      options:
+        - label: This report does not request ingest, policy, alerting, or actuation behavior in CEL.
+          required: true

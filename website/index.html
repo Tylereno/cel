@@ -1,0 +1,133 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta
+      name="description"
+      content="A read-only explorer for CEL's speakable incident and emergency response vocabulary."
+    />
+    <title>CEL Explorer · OpenLexicon</title>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="header-inner">
+        <div>
+          <p class="eyebrow">OpenLexicon language work</p>
+          <h1>CEL Explorer</h1>
+          <p class="lede">
+            Speakable incident words and response postures for people and machines.
+          </p>
+        </div>
+        <div class="header-meta">
+          <span class="status-pill">read-only explorer</span>
+          <span class="source-note">Source of truth: CEL schemas and vocabularies</span>
+        </div>
+      </div>
+    </header>
+
+    <main class="page">
+      <section class="boundary" aria-label="Boundary">
+        <strong>Language, not control.</strong>
+        CEL names incidents and allowed response states. It does not ingest feeds,
+        choose policy, issue alerts, or trip equipment.
+      </section>
+
+      <section class="stats" aria-label="CEL summary">
+        <article>
+          <span class="stat-label">Incident words</span>
+          <strong id="incident-count">—</strong>
+          <span class="stat-note">root, category, and leaf vocabulary</span>
+        </article>
+        <article>
+          <span class="stat-label">Speakable leaves</span>
+          <strong id="leaf-count">—</strong>
+          <span class="stat-note">primary identifiers use CEL words</span>
+        </article>
+        <article>
+          <span class="stat-label">Response machines</span>
+          <strong id="machine-count">—</strong>
+          <span class="stat-note">site postures, not actuator commands</span>
+        </article>
+        <article>
+          <span class="stat-label">Spec</span>
+          <strong id="spec-version">—</strong>
+          <span class="stat-note">contract version from the source tree</span>
+        </article>
+      </section>
+
+      <section class="explorer-grid" aria-label="Incident vocabulary explorer">
+        <div class="panel incident-panel">
+          <div class="panel-heading">
+            <div>
+              <p class="eyebrow">Dimension one</p>
+              <h2>Incident words</h2>
+            </div>
+            <span class="panel-count" id="visible-count">—</span>
+          </div>
+          <label class="search">
+            <span class="sr-only">Search incident words</span>
+            <input
+              id="incident-search"
+              type="search"
+              placeholder="Search fire, earthquake, flood…"
+              autocomplete="off"
+            />
+          </label>
+          <div class="category-list" id="category-list" aria-label="Incident categories"></div>
+          <div class="word-list" id="incident-list" role="listbox" aria-label="CEL incident words"></div>
+        </div>
+
+        <article class="panel detail-panel" aria-live="polite">
+          <p class="eyebrow">Selected word</p>
+          <div id="incident-detail"></div>
+        </article>
+      </section>
+
+      <section class="panel response-panel" aria-label="Response machine explorer">
+        <div class="panel-heading">
+          <div>
+            <p class="eyebrow">Dimension two</p>
+            <h2>Response machines</h2>
+          </div>
+          <span class="readonly-label">consumer policy decides when events fire</span>
+        </div>
+        <div class="machine-tabs" id="machine-tabs" role="tablist" aria-label="Response machines"></div>
+        <div class="machine-content" id="machine-content" role="tabpanel"></div>
+      </section>
+
+      <section class="source-grid">
+        <article class="source-card">
+          <p class="eyebrow">How to read it</p>
+          <h2>One vocabulary, two dimensions</h2>
+          <p>
+            An incident word such as <code>disaster.fire.wildland</code> describes
+            what is happening. A response word such as <code>response.escalate</code>
+            names a site posture a downstream consumer may enter.
+          </p>
+        </article>
+        <article class="source-card">
+          <p class="eyebrow">Boundaries</p>
+          <h2>Keep the layers separate</h2>
+          <p>
+            Sentinel normalizes observations, a consumer owns policy, and any
+            actuation remains outside CEL. OIDF commissioning evidence is a sibling
+            vocabulary, not part of this language.
+          </p>
+        </article>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <p>
+        CEL v0.1.0 · Apache 2.0 · <a href="./schemas/">Published schemas</a> ·
+        <a href="./LICENSE">LICENSE</a>
+      </p>
+      <p>Static demo only. No network calls, writes, or actuation.</p>
+    </footer>
+
+    <script src="./data.js"></script>
+    <script src="./app.js"></script>
+  </body>
+</html>

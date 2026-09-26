@@ -1,0 +1,58 @@
+name: Vocabulary proposal
+description: Propose a CEL incident word, response state, profile, or crosswalk.
+title: "[Proposal] "
+labels:
+  - proposal
+body:
+  - type: markdown
+    attributes:
+      value: |
+        CEL names incidents and response postures. It does not decide policy or issue commands.
+  - type: dropdown
+    id: change_type
+    attributes:
+      label: Change type
+      options:
+        - Incident word (disaster.*)
+        - Response state (response.*)
+        - Crosswalk/profile
+        - Schema or compatibility rule
+    validations:
+      required: true
+  - type: input
+    id: proposed_code
+    attributes:
+      label: Proposed CEL code
+      placeholder: disaster.example.event or response.example
+    validations:
+      required: true
+  - type: textarea
+    id: use_case
+    attributes:
+      label: Use case
+      description: Name the interoperability problem and who needs the word.
+    validations:
+      required: true
+  - type: textarea
+    id: provenance
+    attributes:
+      label: Provenance and profiles
+      description: List external standards or identifiers as profiles, not primary CEL identifiers.
+    validations:
+      required: true
+  - type: textarea
+    id: compatibility
+    attributes:
+      label: Compatibility impact
+      description: Explain affected schemas, consumers, machines, or migration notes.
+    validations:
+      required: true
+  - type: checkboxes
+    id: boundary
+    attributes:
+      label: Boundary check
+      options:
+        - label: This proposal keeps ingest in Sentinel and policy/actuation in a consumer.
+          required: true
+        - label: This proposal does not copy the UNDRR HIP tree or CAP schema.
+          required: true

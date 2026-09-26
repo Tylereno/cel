@@ -7,9 +7,12 @@ gate checks, before publication, that
   1. every `$id` under core_schemas/ is exactly BASE + the path we serve it from,
   2. every `$ref` naming BASE resolves to a schema this repository serves, and
   3. with --public, the staged artifact really contains a file per identifier
-     and every internal link on the landing page lands on a staged file
+     and every internal link on a published page lands on a staged file
      (Pages serves no directory listing, so a missing file is a 404 rather than
-     a redirect, and the identifier silently stops resembling a URL).
+     a redirect, and the identifier silently stops resembling a URL). Links are
+     resolved relative to the page that carries them, and a root-absolute link
+     is a failure: this repo is served from the /cel project subpath, so "/x"
+     points outside it.
 
 Stdlib only. Exit status is the gate: non-zero fails the build.
 """
@@ -27,7 +30,16 @@ SERVED_PREFIX = "schemas/"
 ROOT = Path(__file__).resolve().parents[1]
 SCHEMA_DIR = ROOT / "core_schemas"
 
-EXTERNAL_HREF = ("http://", "https://", "mailto:", "data:", "#", "/", "..")
+# A link is off-site (and therefore not ours to check) only if it names another
+# origin or is a pure in-page fragment. Parent-relative links like "../x" are
+# internal and MUST be checked: that is exactly the shape of the CEL explorer's
+# link to ../README.md, which 404s once published.
+OFF_SITE = ("http://", "https://", "mailto:", "tel:", "data:", "javascript:")
+PROJECT = BASE.split("/")[3]  # repo name == Pages subpath
+
+
+def is_off_site(href: str) -> bool:
+    return href.startswith(OFF_SITE) or href.startswith("#")
 
 
 def served_path(path: Path) -> str:
@@ -47,20 +59,42 @@ def walk_refs(node, found: list[str]) -> None:
             walk_refs(item, found)
 
 
-def check_landing(artefact: Path, failures: list[str]) -> int:
-    landing = artefact / "index.html"
-    if not landing.is_file():
-        failures.append("index.html: missing from the staged artifact")
-        return 0
+PAGES = ("index.html", "schemas/index.html")
+
+
+def check_links(artefact: Path, failures: list[str]) -> int:
+    """Every internal link on a published page must hit a real file.
+
+    Pages serves no directory listing, so a link to a bare directory is a 404
+    even when the directory is present: a directory link only counts when it
+    carries an index.html of its own.
+    """
     checked = 0
-    for href in re.findall(r'href="([^"]+)"', landing.read_text(encoding="utf-8")):
-        if href.startswith(EXTERNAL_HREF):
+    for page in PAGES:
+        path = artefact / page
+        if not path.is_file():
+            failures.append(f"{page}: missing from the staged artifact")
             continue
-        checked += 1
-        target = artefact / href
-        ok = target.is_file() or (href.endswith("/") and target.is_dir())
-        if not ok:
-            failures.append(f"index.html: link {href!r} has no file in the staged artifact")
+        for href in re.findall(r'href="([^"]+)"', path.read_text(encoding="utf-8")):
+            if is_off_site(href):
+                continue
+            checked += 1
+            if href.startswith("/"):
+                failures.append(
+                    f"{page}: link {href!r} is root-absolute and escapes the "
+                    f"/{PROJECT}/ project subpath"
+                )
+                continue
+            # Resolve the way a browser does: relative to the page, not the root.
+            target = (path.parent / href).resolve()
+            if href.endswith("/"):
+                ok = (target / "index.html").is_file()
+            else:
+                ok = target.is_file()
+            if not ok:
+                failures.append(
+                    f"{page}: link {href!r} resolves to nothing in the staged artifact"
+                )
     return checked
 
 
@@ -105,11 +139,11 @@ def main() -> int:
         for rel, _ in sorted(published):
             if not (artefact / SERVED_PREFIX / rel).is_file():
                 failures.append(f"{SERVED_PREFIX}{rel}: not present in the staged artifact")
-        for extra in ("LICENSE", "index.html", "schemas/index.html", "schemas/manifest.json"):
+        for extra in ("LICENSE", "NOTICE", "index.html", "schemas/index.html", "schemas/manifest.json"):
             if not (artefact / extra).is_file():
                 failures.append(f"{extra}: missing from the staged artifact")
-        links = check_landing(artefact, failures)
-        print(f"landing links checked: {links}")
+        links = check_links(artefact, failures)
+        print(f"published page links checked: {links}")
 
     print(f"\nFAIL {len(failures)}")
     for failure in failures:
