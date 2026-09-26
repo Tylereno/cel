@@ -9,8 +9,9 @@ site can sit in `response.isolate_load` without anyone translating
 Stewarded by [Tyler Eno](https://tylereno.me/). Anyone may implement it.
 **CEL is not sold as a product.**
 
-Planned landing: `openeno.dev` and an `openeno` GitHub org. Until that move,
-this repository (`Tylereno/cel`) is the format source of truth.
+Published surface: **https://tylereno.me/cel/** — the schemas, taxonomies, and
+normative docs are served from this repository by GitHub Pages, and this
+repository (`Tylereno/cel`) is the format source of truth.
 
 ## Layers (do not collapse)
 
@@ -99,12 +100,13 @@ CAP urgency/severity/certainty describe an alert. They are not these states.
 ## Validate locally
 
 ```bash
-python3 -m pip install "jsonschema>=4.0" "pyyaml>=6.0"
+python3 -m pip install "jsonschema>=4.0" "pyyaml>=6.0" "referencing>=0.30"
 python3 tooling/validate_cel.py
 python3 -m unittest tooling.test_cel_v0 -v
+python3 tooling/verify_pages_ids.py     # every $id maps to a served path
 ```
 
 ## License
 
-Apache 2.0 — see [`LICENSE`](./LICENSE). Repo remains **private** until the
-founder flips visibility.
+Apache 2.0 — see [`LICENSE`](./LICENSE). The repository is **private**; the
+format surface at <https://tylereno.me/cel/> is served publicly from it.

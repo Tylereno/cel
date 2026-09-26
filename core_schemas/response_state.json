@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://openeno.dev/cel/schemas/response_state.json",
+  "$id": "https://tylereno.me/cel/schemas/response_state.json",
   "title": "CelResponseState",
   "description": "One speakable CEL response-state vocabulary entry. Not a CAP urgency/severity/certainty triple. Not an OIDF commissioning state.",
   "type": "object",

@@ -1,0 +1,87 @@
+name: CEL format surface (GitHub Pages)
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "core_schemas/**"
+      - "taxonomies/**"
+      - "response_machines/**"
+      - "crosswalks/**"
+      - "feeds/**"
+      - "docs/**"
+      - "tooling/**"
+      - "pages/**"
+      - "LICENSE"
+      - ".github/workflows/pages.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install validation dependencies
+        run: python -m pip install "jsonschema>=4.0" "pyyaml>=6.0" "referencing>=0.30"
+
+      - name: Validate CEL source
+        run: python tooling/validate_cel.py
+
+      - name: CEL v0 unit checks
+        run: python -m unittest tooling.test_cel_v0 -v
+
+      - name: Stage explorer + published format tree
+        run: |
+          set -euo pipefail
+          rm -rf public
+          mkdir -p public/schemas
+          cp pages/landing.html public/index.html
+          cp -R core_schemas/. public/schemas/
+          find public/schemas -name README.md -delete
+          cp -R taxonomies/. public/taxonomies/
+          cp -R crosswalks/. public/crosswalks/
+          cp -R feeds/. public/feeds/
+          cp -R response_machines/. public/response_machines/
+          cp -R docs/normative/. public/normative/
+          cp LICENSE public/LICENSE
+          python tooling/gen_schema_index.py --out public/schemas/index.html
+          test -f public/index.html
+          test -f public/schemas/index.html
+          test -f public/schemas/manifest.json
+          test -f public/LICENSE
+          test ! -e public/schemas/README.md
+
+      - name: Verify every published $id dereferences
+        run: python tooling/verify_pages_ids.py --public public
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: public
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

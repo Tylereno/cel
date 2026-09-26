@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CEL — Core Emergency Language</title>
+<style>
+  :root { color-scheme: dark light; --rule: #8883; --dim: .7; }
+  body { font: 16px/1.6 ui-sans-serif, system-ui, -apple-system, Segoe UI, sans-serif;
+         margin: 0 auto; max-width: 54rem; padding: 3rem 1.25rem 5rem; }
+  h1 { font-size: 1.9rem; margin: 0 0 .35rem; letter-spacing: -.01em; }
+  h2 { font-size: 1.05rem; text-transform: uppercase; letter-spacing: .06em;
+       margin: 2.5rem 0 .75rem; opacity: .75; }
+  p, li { margin: .5rem 0; }
+  code, pre { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; }
+  code { font-size: .92em; }
+  pre { background: #8881; padding: .9rem 1rem; border-radius: 6px; overflow-x: auto; }
+  ul { padding-left: 1.1rem; }
+  a { text-underline-offset: 2px; }
+  .lede { font-size: 1.12rem; }
+  .dim { opacity: var(--dim); font-size: .9rem; }
+  hr { border: 0; border-top: 1px solid var(--rule); margin: 2rem 0; }
+</style>
+</head>
+<body>
+<h1>CEL — Core Emergency Language</h1>
+<p class="lede">Humans and machines share the same words. You can say
+<code>disaster.fire.wildland</code> out loud; a schema can validate it. A site can sit in
+<code>response.isolate_load</code> without anyone translating <code>EN0205</code> or a CAP XML
+blob first.</p>
+<p>Stewarded by <a href="https://tylereno.me/">Tyler Eno</a>. Anyone may implement it.
+CEL is not sold as a product.</p>
+
+<h2>The contract</h2>
+<ul>
+  <li><a href="schemas/">Published schemas</a> — every <code>$id</code>, dereferenceable</li>
+  <li><a href="schemas/manifest.json">manifest.json</a> — machine-readable identifier index</li>
+  <li>Canonical identifier base: <code>https://tylereno.me/cel/schemas/</code></li>
+</ul>
+<p class="dim">JSON Schema Draft 2020-12. Pin a commit or tag rather than fetching by URL if
+you need reproducibility.</p>
+
+<h2>The language</h2>
+<ul>
+  <li><a href="taxonomies/disasters.yaml">taxonomies/disasters.yaml</a> — the incident words</li>
+  <li><a href="response_machines/">response_machines/</a> — response words and allowed transitions</li>
+  <li><a href="crosswalks/">crosswalks/</a> — USGS / GDACS / NWS CAP → CEL</li>
+  <li><a href="feeds/matrix.yaml">feeds/matrix.yaml</a> — the ingest source matrix</li>
+  <li><a href="normative/">normative/</a> — RFCs (served as plain text)</li>
+</ul>
+
+<pre>many open feeds (RSS / CAP / GeoJSON)
+        ↓ ingests, normalizes, keeps provenance
+CEL words: disaster.geophysical.earthquake
+        ↓ policy, suggestions, optional actuation
+CEL words: response.monitor → response.escalate → response.isolate_load</pre>
+
+<h2>What this is not</h2>
+<ul>
+  <li>Not a runtime, ingest service, or dashboard — CEL is the vocabulary and its schemas.</li>
+  <li>Not a copy of the UNDRR HIP tree, and not a fork of CAP. HIP codes appear as
+      <em>profiles on CEL leaves</em>, not as the identifiers crews use.</li>
+  <li>Not commissioning evidence — that question belongs to
+      <a href="https://tylereno.me/oidf/">OIDF</a>. CEL is its sibling, not part of it.</li>
+</ul>
+<p class="dim">v0 is a lab release: five schemas, one incident taxonomy, five response states.</p>
+
+<hr>
+<p class="dim">Apache-2.0 — see <a href="LICENSE">LICENSE</a>. Format-only checks live in
+<code>tooling/</code> in the repository.</p>
+</body>
+</html>

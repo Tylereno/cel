@@ -31,3 +31,6 @@ jobs:
 
       - name: CEL v0 unit checks
         run: python -m unittest tooling.test_cel_v0 -v
+
+      - name: Verify published $id mapping
+        run: python tooling/verify_pages_ids.py

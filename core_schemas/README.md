@@ -6,9 +6,10 @@ JSON Schema Draft 2020-12 for CEL v0 artifacts. Layout follows OIDF
 The schemas exist so the **same words** a human reads in the README can be
 checked by a validator. They do not replace the language with HIP codes.
 
-`$id` values use `https://openeno.dev/cel/schemas/…` as the intended OpenEno
-namespace. That host is planned, not a live HTTP registry in v0. Pin this
-git commit (or a future annotated tag) rather than fetching schemas by URL.
+`$id` values use `https://tylereno.me/cel/schemas/…`, the host that actually
+serves this repository (GitHub Pages). Dereferencing an `$id` returns that
+schema; `schemas/manifest.json` lists every one. For reproducibility, pin a
+commit or an annotated tag rather than fetching by URL.
 
 | File | Role |
 |---|---|
