@@ -53,8 +53,8 @@ def schema_registry() -> tuple[dict[str, dict[str, Any]], Registry]:
         schema = load_json(path)
         Draft202012Validator.check_schema(schema)
         schema_id = schema.get("$id", "")
-        if not str(schema_id).startswith("https://openeno.dev/cel/schemas/"):
-            raise ValueError(f"{path}: $id must use the legacy v0 CEL namespace, got {schema_id!r}")
+        if not str(schema_id).startswith("https://tylereno.me/cel/schemas/"):
+            raise ValueError(f"{path}: $id must use the published v0 CEL namespace, got {schema_id!r}")
         schemas[path.stem] = schema
         resources.append((schema_id, Resource.from_contents(schema)))
     return schemas, Registry().with_resources(resources)

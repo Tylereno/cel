@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://openeno.dev/cel/schemas/response_machine.json",
+  "$id": "https://tylereno.me/cel/schemas/response_machine.json",
   "title": "CelResponseMachine",
   "description": "Emergency response finite state machine in speakable CEL words. Names allowed postures and transitions. Does not encode commissioning evidence, SAT gates, CAP fields, or actuation.",
   "type": "object",
@@ -47,7 +47,7 @@
     "states": {
       "type": "array",
       "minItems": 1,
-      "items": { "$ref": "https://openeno.dev/cel/schemas/response_state.json" }
+      "items": { "$ref": "https://tylereno.me/cel/schemas/response_state.json" }
     },
     "transitions": {
       "type": "array",

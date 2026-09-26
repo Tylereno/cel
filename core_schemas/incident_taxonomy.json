@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://openeno.dev/cel/schemas/incident_taxonomy.json",
+  "$id": "https://tylereno.me/cel/schemas/incident_taxonomy.json",
   "title": "CelIncidentTaxonomy",
   "description": "Speakable CEL incident catalog. Finite and mission-scoped. HIP/CAP/GLIDE identifiers are optional profiles, never the primary code.",
   "type": "object",

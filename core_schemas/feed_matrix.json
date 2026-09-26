@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://openeno.dev/cel/schemas/feed_matrix.json",
+  "$id": "https://tylereno.me/cel/schemas/feed_matrix.json",
   "title": "CelFeedMatrix",
   "description": "Catalog of open ingest sources Sentinel should poll. Dictionary only — not a fetcher. cel_codes must be speakable CEL incident words.",
   "type": "object",

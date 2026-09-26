@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://openeno.dev/cel/schemas/feed_crosswalk.json",
+  "$id": "https://tylereno.me/cel/schemas/feed_crosswalk.json",
   "title": "CelFeedCrosswalk",
   "description": "Map from an external hazard feed (USGS, GDACS, CAP, Sentinel) to speakable CEL incident words. Dictionary only — not an ingest runtime.",
   "type": "object",

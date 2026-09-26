@@ -105,13 +105,26 @@ CAP urgency/severity/certainty describe an alert. They are not these states.
 
 ## Public explorer and hosting
 
-The [`website/`](./website/) directory is a generated-data, read-only explorer.
-The future public host should deploy only the four explorer assets
-(`index.html`, `styles.css`, `app.js`, and generated `data.js`) through GitHub
-Pages. The source files, validators, and private operational material must not
-be published as site content.
+The published surface is **<https://tylereno.me/cel/>**:
 
-The Enotech site may link to the explorer as a company-facing presentation, but
+- `/cel/` — the read-only explorer (generated `data.js`, no network calls)
+- `/cel/schemas/` — the schema index, one entry per published `$id`
+- `/cel/schemas/manifest.json` — machine-readable identifier index
+- `/cel/NOTICE` — attribution carried by Apache-2.0
+
+Every published identifier is a live URL: dereference
+`https://tylereno.me/cel/schemas/incident_taxonomy.json` and you get that
+schema. `tooling/verify_pages_ids.py` checks the mapping on every push and fails
+the build when a file and its `$id` disagree, and `tooling/gen_schema_index.py`
+derives the index and manifest from the same scan, so the published index cannot
+drift from the schemas.
+
+GitHub Pages serves no directory listing, so the deployment copies the format
+tree itself — the explorer alone would leave every `$id` pointing at a 404.
+Source files, validators, and private operational material are never published
+as site content.
+
+The EnoTech site may link to the explorer as a company-facing presentation, but
 the canonical source and contribution flow belong in this repository after the
 OpenLexicon transfer.
 
@@ -127,9 +140,19 @@ ingest, consumer policy, OIDF commissioning, and actuation.
 python3 -m pip install "jsonschema>=4.0" "pyyaml>=6.0"
 python3 tooling/validate_cel.py
 python3 -m unittest tooling.test_cel_v0 -v
+python3 tooling/verify_pages_ids.py
 ```
+
+To rehearse the deployed surface exactly, stage an artifact the way
+`.github/workflows/pages.yml` does and run
+`python3 tooling/verify_pages_ids.py --public public`. That check is what proves
+every identifier has a file behind it before the site goes out.
 
 ## License
 
 Apache 2.0 — see [`LICENSE`](./LICENSE). Contributions are accepted under the
 Apache-2.0 terms with DCO sign-off; there is no CLA at this stage.
+
+The deployed format surface (<https://tylereno.me/cel/>) is public. This
+repository is still private while the OpenLexicon transfer is pending;
+publishing the surface changes neither the license nor the contribution path.

@@ -6,11 +6,18 @@ JSON Schema Draft 2020-12 for CEL v0 artifacts. Layout follows OIDF
 The schemas exist so the **same words** a human reads in the README can be
 checked by a validator. They do not replace the language with HIP codes.
 
-`$id` values currently use `https://openeno.dev/cel/schemas/…` as the legacy v0
-namespace. The OpenLexicon host and any namespace migration are not selected
-yet; do not change `$id` values ad hoc. That host is not a live HTTP registry
-in v0. Pin this git commit (or a future annotated tag) rather than fetching
-schemas by URL.
+`$id` values use `https://tylereno.me/cel/schemas/…`, the published CEL surface.
+Each identifier is a live URL that returns the schema it names, and the
+[index](https://tylereno.me/cel/schemas/) and
+[manifest](https://tylereno.me/cel/schemas/manifest.json) are generated from the
+same scan as the schemas themselves.
+
+That base is **frozen for v0**. An `$id` is the name implementations pin, so
+moving hosts is a versioned migration, not an edit: do not change `$id` values
+ad hoc. `tooling/verify_pages_ids.py` fails the build when a file and its
+identifier disagree. If the OpenLexicon organization later takes over the
+namespace, that is a deliberate v1 decision that aliases the v0 URLs — not a
+silent rewrite.
 
 | File | Role |
 |---|---|

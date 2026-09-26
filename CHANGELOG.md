@@ -6,6 +6,11 @@ All notable CEL changes are recorded here.
 
 - Prepare public contribution, governance, security, and Pages hosting
   scaffolding.
+- Publish the format surface on GitHub Pages: every `$id` now resolves at
+  `https://tylereno.me/cel/schemas/…` (the dead `openeno.dev` host is retired),
+  the deployment ships the format tree rather than the explorer alone, and the
+  schema index, identifier manifest, and corpus listing are generated from the
+  same scan that the deploy gate checks.
 
 ## [0.1.0] - 2026-08-20
 

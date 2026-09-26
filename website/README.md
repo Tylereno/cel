@@ -22,6 +22,7 @@ Open <http://localhost:8787>.
 
 The explorer is a presentation surface only. CEL names incidents and allowed
 response postures; it does not ingest feeds, evaluate consumer policy, issue
-alerts, or actuate equipment. The future public landing destination is the
-OpenLexicon organization and its selected documentation domain, pending the
-repository transfer and domain decision.
+alerts, or actuate equipment. It is published today at
+<https://tylereno.me/cel/>, alongside the schema index at
+<https://tylereno.me/cel/schemas/>. The long-term home is the OpenLexicon
+organization once the repository transfer lands.

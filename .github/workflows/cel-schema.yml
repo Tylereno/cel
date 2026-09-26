@@ -38,3 +38,6 @@ jobs:
 
       - name: Check explorer JavaScript
         run: node --check website/app.js
+
+      - name: Verify published identifier mapping
+        run: python tooling/verify_pages_ids.py

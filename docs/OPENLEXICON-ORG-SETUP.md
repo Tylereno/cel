@@ -20,7 +20,12 @@ transfer copyright by itself.
    - enable private vulnerability reporting;
    - keep Actions permissions at least privilege.
 6. Set the Pages source to GitHub Actions and attach the selected OpenLexicon
-   domain only after DNS and TLS are ready.
+   domain only after DNS and TLS are ready. Pages is **already enabled** on
+   `Tylereno/cel` (Actions source) and serves <https://tylereno.me/cel/>, a
+   free subpath of an already-owned domain. Two account facts to carry over: a
+   Pages project path follows the repository name, and Pages paths are
+   **case-sensitive** — which is why the repository is lowercase `cel` while its
+   `$id` base is `/cel/`.
 7. Add an `@OpenLexicon/maintainers` team and update `CODEOWNERS` after the
    team exists.
 
@@ -32,7 +37,11 @@ transfer copyright by itself.
 - Review repository history for secrets, private URLs, customer data, and
   deployment details.
 - Decide whether the current `openeno.dev` v0 schema namespace remains a
-  legacy identifier or receives a versioned migration.
+  legacy identifier or receives a versioned migration. **Settled 2026-09-26:**
+  `openeno.dev` is a dead host, so identifiers now resolve at
+  `https://tylereno.me/cel/schemas/…` and that base is frozen for v0. An
+  OpenLexicon namespace is a versioned v1 migration with v0 URLs aliased, never
+  an in-place rewrite of `$id` values.
 
 ## Canonical source rule
 
